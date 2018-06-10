@@ -9,6 +9,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@skinnyjames/hourglass": "^1.2.1"
+    "@skinnyjames/hourglass": "^1.2.1",
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "babel-loader": "7.1.4",
+    "babel-preset-env": "1.7.0",
+    "mocha": "^5.1.1",
+    "standard": "11.0.1",
+    "webpack": "^4.8.1",
+    "webpack-cli": "2.1.3"
   }
 }

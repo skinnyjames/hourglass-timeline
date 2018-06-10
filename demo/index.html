@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <style>
+      html, body, .timeline-container {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+    <script src="hourglass.js"></script>
+    <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="timeline-container">
+      <canvas id="timeline" width="900px" height="400px">
+      </canvas>
+    </div>
+    <script>
+      $(document).ready(function(){
+        initTimeline();    
+      })
+
+      function initTimeline(){
+        let canvas = document.getElementById('timeline')  
+        let ctx = canvas.getContext('2d')
+        let width = canvas.width
+        let height = canvas.height
+        // reference points for drawing
+        let middle = height / 2
+        let start = -Math.abs(width / 2)
+        let end = Math.abs(width / 2)
+        // reference for drawing events
+        let interval = 20
+        let yearsInterval = 100
+        let yearsStart = (100 * 20 / start)
+        console.log(yearsStart)
+
+        let past = hourglass({ years: -200, from: new Date(Date.now())})
+        let future = hourglass({years: 300, from: new Date(Date.now())})
+        let now = hourglass({ seconds: 0, from: new Date(Date.now())})
+        let one = hourglass({ years: -50, from: new Date(Date.now())})
+        let two = hourglass({ years: 150, from: new Date(Date.now())})
+
+
+        ctx.beginPath()
+        ctx.moveTo(start, middle)
+        ctx.lineTo(width, middle)
+        ctx.closePath()
+        ctx.stroke()
+        
+        plotPoints([future, past, now, one, two])
+
+        function plotPoints(arrayOfPoints) {
+          // calculate min and max points  
+          arrayOfPoints.sort(function(a, b) { return b.fromNow() - a.fromNow() })
+          console.log(arrayOfPoints)
+
+          let minYears = arrayOfPoints[0].time  / hourglass.SECONDS_PER_YEAR
+          let maxYears = arrayOfPoints[arrayOfPoints.length - 1].time / hourglass.SECONDS_PER_YEAR
+
+          // max years is to end as point.years is to x
+
+
+          // min years is to beginning as point.years is to x
+          let newPoints = []
+          for (let v=0; v<arrayOfPoints.length; v++) {
+            var something
+            if (arrayOfPoints[v].years < 0) {
+              something = ((arrayOfPoints[v].years * start / minYears) + (width /2)) 
+            }else {
+              something = ((arrayOfPoints[v].years * end / maxYears) + (width / 2))
+            }
+
+            console.log(Math.abs(Math.round(something)))
+
+            for (let i=start; i<width; i++) {
+              if (Math.abs(Math.round(something)) == i) {
+                ctx.beginPath()
+                ctx.moveTo(i, middle - 30)
+                ctx.lineTo(i, middle + 30)
+                ctx.closePath()
+                ctx.stroke()
+              }
+            }
+          }
+        }
+
+        for (let i=start; i<width; i+= interval) {
+          ctx.beginPath()
+          ctx.moveTo(i, middle - 15)
+          ctx.lineTo(i, middle + 15)
+          ctx.closePath()
+          ctx.stroke()
+          
+        }
+      }
+
+
+    </script>
+  </body>
+</html>
