@@ -73,7 +73,7 @@
           for (let v=0; v<arrayOfPoints.length; v++) {
             var something
             if (arrayOfPoints[v].years < 0) {
-              something = ((arrayOfPoints[v].years * start / minYears) + (width /2)) 
+              something = ((arrayOfPoints[v].years * start / -Math.abs(maxYears)) + (width /2)) 
             }else {
               something = ((arrayOfPoints[v].years * end / maxYears) + (width / 2))
             }
